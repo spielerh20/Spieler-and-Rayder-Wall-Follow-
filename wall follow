@@ -1,0 +1,61 @@
+#include <kipr/botball.h>
+int f_eye = 0; // where the front sensor is located
+int r_eye = 5;  // where the right sensor is located
+int l_motor = 3;  // where the left motor is located
+int r_motor = 0;  // where the right motor is located
+int speed = 65; // the overall speed of the robot
+int pause = 1700; 
+int Smallpause = 1500;
+int target = 2900; // the number the sensors are looking for 
+
+int main(){
+
+wallRun(); // do wallrun
+turnLeft(); // when wallrun over do turnleft
+wallRun(); // when turnleft over do wallrun
+}
+
+//Function def
+
+void forwards(){ // gives forwards a meaning and command 
+ motor(l_motor,speed);
+ motor(r_motor,speed/2);
+}
+   
+void rearLeft(){ // turn the robot a little to the left
+ motor(l_motor,speed/4);
+ motor(r_motor,speed);
+
+}
+ 
+void rearRight(){ // turn the robot a little to the right
+ motor(l_motor,speed);
+ motor(r_motor,speed/3);
+
+}
+     
+void turnLeft(){ // completely turns the robot left  
+ motor(l_motor,-speed/2);
+ motor(r_motor,speed);
+ msleep(Smallpause);
+ forwards();
+ msleep(pause);
+ ao();
+   
+}
+
+void wallRun(){ // name of the code made to follow the wall
+     while(analog(f_eye) <= target){ // when the front sensor is less than 2900 do the next loop
+    
+      if (analog(r_eye) >= target){ // when the right sensor is greater than 2900
+           rearLeft();//veering left away from wall
+        printf("veer away!/n");// makes the robot print veer away left on the screen
+         }
+
+  if (analog(r_eye) <= target){
+           rearRight();    
+    printf("veer toward wall!/n");
+  }
+ 
+}
+}
